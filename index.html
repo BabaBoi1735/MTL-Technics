@@ -13,11 +13,20 @@
       box-sizing: border-box;
     }
 
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f8f9fa;
       color: #333;
-      line-height: 1.6;
+      line-height: 2;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
     }
 
     nav {
@@ -34,13 +43,14 @@
       z-index: 1000;
       min-height: 60px;
       min-width: 600px;
-      overflow-x: auto;
-      overflow-y: visible;
-      scrollbar-width: none;
     }
 
     @media (max-width: 768px) {
       nav {
+        min-width: 500px;
+        padding: 1rem 1.5rem;
+        overflow-x: auto;
+        overflow-y: visible;
         scrollbar-width: thin;
         scrollbar-color: rgba(255,255,255,0.3) transparent;
       }
@@ -246,11 +256,15 @@
 
     .main-content {
       margin-top: 80px;
+      flex: 1;
+      width: 100%;
+      min-height: calc(100vh - 80px);
     }
 
     .page-section {
       display: none;
-      min-height: 80vh;
+      min-height: calc(100vh - 80px);
+      width: 100%;
     }
 
     .page-section.active {
@@ -334,11 +348,13 @@
     .services {
       padding: 4rem 2rem;
       background: #fff;
+      width: 100%;
     }
 
     .container {
       max-width: 1200px;
       margin: 0 auto;
+      width: 100%;
     }
 
     .section-title {
@@ -364,6 +380,7 @@
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
       margin-top: 3rem;
+      width: 100%;
     }
 
     .service-card {
@@ -397,6 +414,7 @@
     .about {
       padding: 4rem 2rem;
       background: #f8f9fa;
+      width: 100%;
     }
 
     .about-content {
@@ -488,6 +506,7 @@
     .projects {
       padding: 4rem 2rem;
       background: white;
+      width: 100%;
     }
 
     .projects-grid {
@@ -568,10 +587,11 @@
     .contact {
       padding: 4rem 2rem;
       background: #f8f9fa;
-      min-height: 80vh;
+      min-height: calc(100vh - 80px);
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 100%;
     }
 
     .contact-container {
@@ -776,6 +796,7 @@
       color: white;
       padding: 2rem;
       text-align: center;
+      width: 100%;
     }
 
     .footer-content {
@@ -808,12 +829,6 @@
     }
 
     @media (max-width: 768px) {
-      nav {
-        min-width: 500px;
-        padding: 1rem 1.5rem;
-        position: relative;
-      }
-
       .main-content {
         margin-top: 0;
       }
@@ -869,12 +884,8 @@
         grid-template-columns: 1fr;
       }
 
-      ::-webkit-scrollbar {
-        display: none;
-      }
-      ::-webkit-scrollbar {
-        background: transparent;
-        width: 0;
+      body {
+        overflow-x: hidden;
       }
     }
 
@@ -1188,7 +1199,6 @@
         clearInterval(interval);
         submitButton.disabled = false;
         submitButton.textContent = 'Verstuur aanvraag';
-        localStorage.removeItem(cooldownKey);
       } else {
         submitButton.textContent = `Wacht ${formatTime(secondsLeft)}`;
       }
@@ -1277,6 +1287,7 @@
 })();
 </script>
 </section>
+  </div>
 
   <footer class="footer" role="contentinfo">
     <div class="container footer-content">
@@ -1441,10 +1452,6 @@
       try {
         if (window.google && google.accounts && google.accounts.id) {
           google.accounts.id.disableAutoSelect();
-          const stored = localStorage.getItem('mtl_user_revoke_email');
-          if (stored && google && google.accounts && google.accounts.id && google.accounts.id.revoke) {
-            google.accounts.id.revoke(stored, () => {});
-          }
         }
       } catch (e) {}
       clearUserUI();
