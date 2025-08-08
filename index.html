@@ -14,9 +14,8 @@
     }
 
     html, body {
-      height: 100%;
-      width: 100%;
       overflow-x: hidden;
+      width: 100%;
     }
 
     body {
@@ -27,6 +26,7 @@
       text-align: center;
       display: flex;
       flex-direction: column;
+      justify-content: center;
     }
 
     nav {
@@ -37,22 +37,21 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: nowrap;
       position: fixed;
       top: 0;
       z-index: 1000;
       min-height: 60px;
-      min-width: 600px;
     }
 
     @media (max-width: 768px) {
       nav {
-        min-width: 500px;
-        padding: 1rem 1.5rem;
+        padding: 1rem 1rem;
         overflow-x: auto;
         overflow-y: visible;
         scrollbar-width: thin;
         scrollbar-color: rgba(255,255,255,0.3) transparent;
+        flex-wrap: nowrap;
+        min-width: 100%;
       }
 
       nav::-webkit-scrollbar {
@@ -86,6 +85,13 @@
       margin-right: 1rem;
     }
 
+    @media (max-width: 768px) {
+      .logo {
+        font-size: 1.2rem;
+        margin-right: 0.5rem;
+      }
+    }
+
     .brand { display:inline-block; font-weight:700; letter-spacing:0.5px; }
     .brand .blue-t { color: #1e90ff; }
 
@@ -99,6 +105,12 @@
       min-width: max-content;
     }
 
+    @media (max-width: 768px) {
+      .nav-links {
+        gap: 1rem;
+      }
+    }
+
     .nav-links a {
       text-decoration: none;
       color: #fff;
@@ -108,6 +120,13 @@
       padding: 0.5rem 1rem;
       border-radius: 25px;
       transition: all 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links a {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+      }
     }
 
     .nav-links a:hover {
@@ -127,10 +146,22 @@
       align-items: center;
     }
 
+    @media (max-width: 768px) {
+      .auth-section {
+        margin-left: 0.5rem;
+      }
+    }
+
     #google-signin {
       display: flex;
       align-items: center;
       min-width: 160px;
+    }
+
+    @media (max-width: 768px) {
+      #google-signin {
+        min-width: 120px;
+      }
     }
 
     #google-fallback-btn {
@@ -146,6 +177,14 @@
       gap: 8px;
       align-items: center;
     }
+
+    @media (max-width: 768px) {
+      #google-fallback-btn {
+        padding: 4px 6px;
+        font-size: 0.8rem;
+      }
+    }
+
     #google-fallback-btn img { width:18px; height:18px; display:block; }
 
     #profile {
@@ -165,6 +204,13 @@
       cursor: pointer;
       transition: box-shadow 0.3s ease;
       position: relative;
+    }
+
+    @media (max-width: 768px) {
+      #profile-button {
+        width: 35px;
+        height: 35px;
+      }
     }
 
     #profile-button img {
@@ -256,14 +302,13 @@
 
     .main-content {
       margin-top: 80px;
-      flex: 1;
       width: 100%;
-      min-height: calc(100vh - 80px);
+      overflow-x: hidden;
     }
 
     .page-section {
       display: none;
-      min-height: calc(100vh - 80px);
+      min-height: 80vh;
       width: 100%;
     }
 
@@ -348,13 +393,11 @@
     .services {
       padding: 4rem 2rem;
       background: #fff;
-      width: 100%;
     }
 
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      width: 100%;
     }
 
     .section-title {
@@ -380,7 +423,6 @@
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
       margin-top: 3rem;
-      width: 100%;
     }
 
     .service-card {
@@ -414,7 +456,6 @@
     .about {
       padding: 4rem 2rem;
       background: #f8f9fa;
-      width: 100%;
     }
 
     .about-content {
@@ -506,7 +547,6 @@
     .projects {
       padding: 4rem 2rem;
       background: white;
-      width: 100%;
     }
 
     .projects-grid {
@@ -587,11 +627,10 @@
     .contact {
       padding: 4rem 2rem;
       background: #f8f9fa;
-      min-height: calc(100vh - 80px);
+      min-height: 80vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 100%;
     }
 
     .contact-container {
@@ -796,7 +835,6 @@
       color: white;
       padding: 2rem;
       text-align: center;
-      width: 100%;
     }
 
     .footer-content {
@@ -829,22 +867,6 @@
     }
 
     @media (max-width: 768px) {
-      .main-content {
-        margin-top: 0;
-      }
-
-      .logo {
-        font-size: 1.4rem;
-      }
-
-      .nav-links {
-        gap: 1.5rem;
-      }
-
-      .nav-links a {
-        font-size: 1rem;
-      }
-
       .hero h1 {
         font-size: 2.5rem;
       }
@@ -882,10 +904,6 @@
 
       .projects-grid {
         grid-template-columns: 1fr;
-      }
-
-      body {
-        overflow-x: hidden;
       }
     }
 
@@ -949,7 +967,7 @@
     <div class="auth-section">
       <div id="google-signin" aria-hidden="false" aria-live="polite"></div>
       <button id="google-fallback-btn" type="button" title="Log in met Google" aria-hidden="true">
-        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path fill='%23EA4335' d='M24 9.5c3.8 0 7.2 1.3 9.9 3.6l7.4-7.4C36.7 2.5 30.8 0 24 0 14.9 0 6.8 4.9 2.6 12.1l8.6 6.7C13.2 12.6 18.2 9.5 24 9.5z'/><path fill='%234285F4' d='M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 2.7-2.3 5-4.8 6.5l7.5 5.8C43.8 38.3 46.5 31.8 46.5 24.5z'/><path fill='%23FBBC05' d='M10.9 28.8A14.6 14.6 0 0 1 10 24c0-1.3.2-2.6.6-3.8L2 13.5C.7 15.9 0 18.8 0 22c0 3.1.7 6 2 8.5l8.9-2.7z'/><path fill='%2327AE60' d='M24 48c6.8 0 12.7-2.3 17-6.1l-8.3-6.4c-2.6 1.7-5.9 2.7-8.7 2.7-6.2 0-11.4-4.1-13.3-9.6L2.6 35.9C6.8 43.1 14.9 48 24 48z'/></svg>" alt="G">
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path fill='%23EA4335' d='M24 9.5c3.8 0 7.2 1.3 9.9 3.6l7.4-7.4C36.7 2.5 30.8 0 24 0 14.9 0 6.8 4.9 2.6 12.1l8.6 6.7C13.2 12.6 18.2 9.5 24 9.5z'/><path fill='%234285F4' d='M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 2.7-2.3 5-4.8 6.5l7.5 5.8C43.8 38.3 46.5 31.8 46.5 24.5z'/>      <path fill='%23FBBC05' d='M10.9 28.8A14.6 14.6 0 0 1 10 24c0-1.3.2-2.6.6-3.8L2 13.5C.7 15.9 0 18.8 0 22c0 3.1.7 6 2 8.5l8.9-2.7z'/><path fill='%2327AE60' d='M24 48c6.8 0 12.7-2.3 17-6.1l-8.3-6.4c-2.6 1.7-5.9 2.7-8.7 2.7-6.2 0-11.4-4.1-13.3-9.6L2.6 35.9C6.8 43.1 14.9 48 24 48z'/></svg>" alt="G">
         <span>Log in met Google</span>
       </button>
 
@@ -1199,6 +1217,7 @@
         clearInterval(interval);
         submitButton.disabled = false;
         submitButton.textContent = 'Verstuur aanvraag';
+        localStorage.removeItem(cooldownKey);
       } else {
         submitButton.textContent = `Wacht ${formatTime(secondsLeft)}`;
       }
@@ -1287,7 +1306,6 @@
 })();
 </script>
 </section>
-  </div>
 
   <footer class="footer" role="contentinfo">
     <div class="container footer-content">
@@ -1452,6 +1470,10 @@
       try {
         if (window.google && google.accounts && google.accounts.id) {
           google.accounts.id.disableAutoSelect();
+          const stored = localStorage.getItem('mtl_user_revoke_email');
+          if (stored && google && google.accounts && google.accounts.id && google.accounts.id.revoke) {
+            google.accounts.id.revoke(stored, () => {});
+          }
         }
       } catch (e) {}
       clearUserUI();
