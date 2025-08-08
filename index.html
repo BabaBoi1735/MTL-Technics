@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MTL-Technics - Sanitair & Loodgietersdiensten</title>
+  <link rel="icon" href="skill-development_18510323.png" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    nav {
+      width: 100%;
+      background-color: #476561;
+      color: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: nowrap;
+      position: fixed;
+      top: 0;
+      z-index: 1000;
+      min-height: 60px;
+      min-width: 600px;
+      overflow-x: auto;
+      overflow-y: visible;
+      scrollbar-width: none;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255,255,255,0.3) transparent;
+      }
+
+      nav::-webkit-scrollbar {
+        height: 6px;
+      }
+
+      nav::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      nav::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.3);
+        border-radius: 3px;
+      }
+
+      nav::-webkit-scrollbar-thumb:hover {
+        background: rgba(255,255,255,0.5);
+      }
+    }
+
+    @media (min-width: 769px) {
+      nav::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-right: 1rem;
+    }
+
+    .brand { display:inline-block; font-weight:700; letter-spacing:0.5px; }
+    .brand .blue-t { color: #1e90ff; }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: nowrap;
+      justify-content: center;
+      flex-grow: 1;
+      flex-shrink: 0;
+      min-width: max-content;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 500;
+      white-space: nowrap;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #dcdcdc;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .nav-links a.active {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .auth-section {
+      position: static;
+      flex-shrink: 0;
+      margin-left: 1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    #google-signin {
+      display: flex;
+      align-items: center;
+      min-width: 160px;
+    }
+
+    #google-fallback-btn {
+      display: none;
+      background: #fff;
+      color: #222;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.08);
+      padding: 6px 10px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+    }
+    #google-fallback-btn img { width:18px; height:18px; display:block; }
+
+    #profile {
+      display: none;
+      position: static;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    #profile-button {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #fff;
+      background: none;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    #profile-button img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    #profile-button:hover {
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+    }
+
+    #dropdown {
+      position: fixed;
+      top: 70px;
+      right: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      width: 220px;
+      display: none;
+      flex-direction: column;
+      padding: 0.5rem 0;
+      z-index: 1001;
+    }
+
+    #dropdown.show {
+      display: flex;
+      animation: dropdownFade 0.3s ease;
+    }
+
+    @keyframes dropdownFade {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #dropdown .user-info {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #eee;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    #dropdown .user-info strong {
+      color: #333;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    #dropdown button {
+      border: none;
+      background: none;
+      padding: 0.75rem 1rem;
+      font-weight: bold;
+      color: #b33a3a;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      transition: all 0.2s ease;
+    }
+
+    #dropdown button:hover {
+      background: #b33a3a;
+      color: #fff;
+    }
+
+    .login-status {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      background: #4CAF50;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      z-index: 1002;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .login-status.show {
+      opacity: 1;
+    }
+
+    .login-status.error {
+      background: #f44336;
+    }
+
+    .main-content {
+      margin-top: 80px;
+    }
+
+    .page-section {
+      display: none;
+      min-height: 80vh;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    .hero {
+      background: linear-gradient(rgba(71,101,97,0.8), rgba(71,101,97,0.9)), 
+                  url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23476561" width="1200" height="600"/><circle fill="%235a7975" cx="200" cy="150" r="80" opacity="0.3"/><circle fill="%235a7975" cx="800" cy="350" r="120" opacity="0.2"/><circle fill="%235a7975" cx="1000" cy="100" r="60" opacity="0.4"/></svg>');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      animation: slideInUp 1s ease;
+    }
+
+    .hero p {
+      font-size: 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      animation: slideInUp 1s ease 0.3s both;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: slideInUp 1s ease 0.6s both;
+    }
+
+    .btn {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: #ff6b35;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #e55a2e;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255,107,53,0.4);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .btn-secondary:hover {
+      background: white;
+      color: #476561;
+      transform: translateY(-3px);
+    }
+
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .services {
+      padding: 4rem 2rem;
+      background: #fff;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.8rem;
+      color: #476561;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: #ff6b35;
+      margin: 1rem auto;
+      border-radius: 2px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .service-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 1px solid #f0f0f0;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    .service-card h3 {
+      font-size: 1.5rem;
+      color: #476561;
+      margin-bottom: 1rem;
+    }
+
+    .service-card p {
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .about {
+      padding: 4rem 2rem;
+      background: #f8f9fa;
+    }
+
+    .about-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-text h2 {
+      font-size: 2.5rem;
+      color: #476561;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-text p {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-features {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #476561;
+      font-weight: 500;
+    }
+
+    .feature-item::before {
+      content: "✓";
+      background: #ff6b35;
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .about-image {
+      background: linear-gradient(45deg, #476561, #5a7975);
+      border-radius: 15px;
+      padding: 2rem;
+      color: white;
+      text-align: center;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .about-image h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .about-image .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ff6b35;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .projects {
+      padding: 4rem 2rem;
+      background: white;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    .project-image {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem 0;
+      overflow: visible;
+    }
+
+    .project-image img {
+      max-width: 325px;
+      max-height: 200px;
+      width: auto;
+      height: auto;
+      border-radius: 10px;
+      object-fit: cover;
+      display: block;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .project-image::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(45deg, rgba(71,101,97,0.8), rgba(90,121,117,0.8));
+      border-radius: 10px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .project-content {
+      padding: 1.5rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .project-content h3 {
+      font-size: 1.3rem;
+      color: #476561;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .project-content p {
+      color: #666;
+      font-size: 0.95rem;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .contact {
+      padding: 4rem 2rem;
+      background: #f8f9fa;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contact-container {
+      max-width: 1500px;
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .contact-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      margin-top: 3rem;
+    }
+
+    .contact-info {
+      text-align: center;
+    }
+
+    .contact-info h3 {
+      font-size: 2rem;
+      color: #476561;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .contact-info > p {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+    }
+
+    .contact-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .contact-item-icon {
+      background: linear-gradient(45deg, #ff6b35, #e55a2e);
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 15px rgba(255,107,53,0.3);
+    }
+
+    .contact-item strong {
+      color: #476561;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .contact-item a {
+      color: #ff6b35;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+    .contact-item a:hover {
+      color: #e55a2e;
+      transform: scale(1.05);
+    }
+
+    .contact-item small {
+      color: #999;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      display: block;
+    }
+
+    .contact-form {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border: 1px solid #f0f0f0;
+      text-align: left;
+    }
+
+    .contact-form h3 {
+      font-size: 2rem;
+      color: #476561;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #476561;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .form-group label .required {
+      color: #ff4444;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      font-family: inherit;
+      background: #fafafa;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #ff6b35;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(255,107,53,0.1);
+      transform: translateY(-2px);
+    }
+
+    .form-group input:invalid,
+    .form-group textarea:invalid {
+      border-color: #ff4444;
+    }
+
+    .form-group textarea {
+      height: 120px;
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-group select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1rem;
+      padding-right: 3rem;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1.2rem 2rem;
+      background: linear-gradient(45deg, #ff6b35, #e55a2e);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(255,107,53,0.3);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255,107,53,0.4);
+      background: linear-gradient(45deg, #e55a2e, #d94d26);
+    }
+
+    .submit-btn:active {
+      transform: translateY(-1px);
+    }
+
+    .footer {
+      background: #2c3e50;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h4 {
+      color: #ff6b35;
+      margin-bottom: 1rem;
+    }
+
+    .footer-section p,
+    .footer-section a {
+      color: #bdc3c7;
+      text-decoration: none;
+      line-height: 1.8;
+    }
+
+    .footer-section a:hover {
+      color: #ff6b35;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #34495e;
+      padding-top: 1rem;
+      color: #95a5a6;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        min-width: 500px;
+        padding: 1rem 1.5rem;
+        position: relative;
+      }
+
+      .main-content {
+        margin-top: 0;
+      }
+
+      .logo {
+        font-size: 1.4rem;
+      }
+
+      .nav-links {
+        gap: 1.5rem;
+      }
+
+      .nav-links a {
+        font-size: 1rem;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .about-content {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .contact-form {
+        padding: 1.5rem;
+      }
+
+      .contact-info h3,
+      .contact-form h3 {
+        font-size: 1.5rem;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      ::-webkit-scrollbar {
+        background: transparent;
+        width: 0;
+      }
+    }
+
+    .text-center { text-align: center; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mt-2 { margin-top: 1rem; }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #ff6b35;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .success-message {
+      background: linear-gradient(45deg, #4CAF50, #45a049);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+      text-align: center;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(76,175,80,0.3);
+      animation: slideInUp 0.5s ease;
+    }
+
+    .field-error {
+      color: #b33a3a;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .field-error.visible {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div id="login-status" class="login-status" role="status" aria-live="polite"></div>
+
+  <nav>
+    <div class="logo">
+      <span class="brand">M<span class="blue-t">T</span>L-<span class="blue-t">T</span>echnics</span>
+    </div>
+    <div class="nav-links" role="navigation" aria-label="Hoofdnavigatie">
+      <a href="#" data-page="home" class="nav-link active">Home</a>
+      <a href="#" data-page="about" class="nav-link">Over ons</a>
+      <a href="#" data-page="services" class="nav-link">Diensten</a>
+      <a href="#" data-page="projects" class="nav-link">Projecten</a>
+      <a href="#" data-page="contact" class="nav-link">Contact</a>
+    </div>
+    <div class="auth-section">
+      <div id="google-signin" aria-hidden="false" aria-live="polite"></div>
+      <button id="google-fallback-btn" type="button" title="Log in met Google" aria-hidden="true">
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path fill='%23EA4335' d='M24 9.5c3.8 0 7.2 1.3 9.9 3.6l7.4-7.4C36.7 2.5 30.8 0 24 0 14.9 0 6.8 4.9 2.6 12.1l8.6 6.7C13.2 12.6 18.2 9.5 24 9.5z'/><path fill='%234285F4' d='M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 2.7-2.3 5-4.8 6.5l7.5 5.8C43.8 38.3 46.5 31.8 46.5 24.5z'/><path fill='%23FBBC05' d='M10.9 28.8A14.6 14.6 0 0 1 10 24c0-1.3.2-2.6.6-3.8L2 13.5C.7 15.9 0 18.8 0 22c0 3.1.7 6 2 8.5l8.9-2.7z'/><path fill='%2327AE60' d='M24 48c6.8 0 12.7-2.3 17-6.1l-8.3-6.4c-2.6 1.7-5.9 2.7-8.7 2.7-6.2 0-11.4-4.1-13.3-9.6L2.6 35.9C6.8 43.1 14.9 48 24 48z'/></svg>" alt="G">
+        <span>Log in met Google</span>
+      </button>
+
+      <div id="profile" aria-hidden="true">
+        <button id="profile-button" aria-label="Profielmenu" aria-haspopup="true" aria-expanded="false">
+          <img id="profile-pic" src="" alt="Profielfoto" />
+        </button>
+        <div id="dropdown" role="menu" aria-label="Profiel opties">
+          <div class="user-info">
+            <strong id="user-name"></strong>
+            <span id="user-email"></span>
+          </div>
+          <button id="logout-btn">Uitloggen</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <section id="home" class="page-section active">
+      <div class="hero">
+        <h1><span class="brand">M<span class="blue-t">T</span>L-<span class="blue-t">T</span>echnics</span></h1>
+        <p><span class="brand">M<span class="brand">T</span>L-<span class="brand">T</span>echnics</span> staat voor kwaliteit, betrouwbaarheid en vakmanschap. Meer dan 40 jaar ervaring in sanitair en loodgieterswerk — van kleine reparaties tot grote installaties.</p>
+        <div class="hero-buttons">
+          <a href="#" class="btn btn-primary" data-page="contact">Direct Contact</a>
+          <a href="#" class="btn btn-secondary" data-page="services">Onze Diensten</a>
+        </div>
+      </div>
+
+      <div class="services">
+        <div class="container">
+          <h2 class="section-title">Onze Specialisaties</h2>
+          <div class="services-grid">
+            <div class="service-card">
+              <h3>Badkamer Installaties</h3>
+              <p>Complete badkamerverbouwingen inclusief ontwerp, waterdichte afwerking en installatie van sanitair. Wij begeleiden elk project van planning tot oplevering en zorgen voor heldere communicatie gedurende het proces.</p>
+            </div>
+            <div class="service-card">
+              <h3>Loodgietersdiensten</h3>
+              <p>Spoedservice en reguliere reparaties bij lekkages, verstoppingen en leidingproblemen. We bieden snelle diagnose, duurzame reparaties en transparante tarieven zodat u weet waar u aan toe bent.</p>
+            </div>
+            <div class="service-card">
+              <h3>Centrale Verwarming & Vloerverwarming</h3>
+              <p>Installatie, optimalisatie en onderhoud van cv-systemen en vloerverwarming. Energie-efficiënte oplossingen en advies om uw verwarmingskosten te verlagen en comfort te verhogen.</p>
+            </div>
+            <div class="service-card">
+              <h3>Lekdetectie & Herstel</h3>
+              <p>Nauwkeurige detectie met moderne technieken en minimaal invasief herstel. We herstellen lekkages snel en netjes en bieden advies om herhaling te voorkomen.</p>
+            </div>
+          </div>
+          <div style="margin-top:1rem; text-align:center; color:#666; font-size:0.95rem;">
+            <strong>Wij leveren vakwerk met oog voor detail en duurzaamheid. Elke klus wordt uitgevoerd door ervaren medewerkers met respect voor uw woning of bedrijfspand.</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="page-section">
+      <div class="about container">
+        <div class="about-content">
+          <div class="about-text">
+            <h2>Over <span class="brand">M<span class="blue-t">T</span>L-<span class="blue-t">T</span>echnics</span></h2>
+            <p><span class="brand">M<span class="brand">T</span>L-<span class="brand">T</span>echnics</span> is een familiebedrijf met meer dan 40 jaar ervaring in sanitair en loodgieterswerk. Wij combineren traditioneel vakmanschap met moderne technieken om duurzame en nette oplossingen te leveren.</p>
+            <div class="about-features">
+              <div class="feature-item">Snelle service & 24/7 bereikbaarheid</div>
+              <div class="feature-item">Transparante offertes en eerlijke prijzen</div>
+              <div class="feature-item">Gecertificeerde en ervaren vakmensen</div>
+            </div>
+          </div>
+          <div class="about-image" aria-hidden="false">
+            <h3>Ervaring die telt</h3>
+            <p>40+ jaar ervaring in installatie, onderhoud en storingsdienst. Betrouwbaar, snel en met nette afwerking.</p>
+            <div class="stats" aria-hidden="true">
+              <div class="stat-item">
+                <div class="stat-number">100+</div>
+                <div class="stat-label">Projecten</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">40+</div>
+                <div class="stat-label">Jaar ervaring</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="page-section">
+      <div class="services container">
+        <h2 class="section-title">Diensten</h2>
+        <div class="services-grid">
+          <div class="service-card">
+            <h3>Badkamer Renovaties</h3>
+            <p>Ontwerp en uitvoering van moderne en praktische badkamers, inclusief ventilatie, afvoer en afwerking naar uw wensen.</p>
+          </div>
+          <div class="service-card">
+            <h3>Spoed & Reparatie</h3>
+            <p>Direct ter plaatse bij spoed. Vakkundige reparatie, tijdelijke oplossingen waar nodig en een permanente hersteloplossing.</p>
+          </div>
+          <div class="service-card">
+            <h3>Vloerverwarming</h3>
+            <p>Advies, installatie en inregelen van vloerverwarming voor een comfortabel binnenklimaat en lagere energiekosten.</p>
+          </div>
+          <div class="service-card">
+            <h3>Lekdetectie & Herstel</h3>
+            <p>Professionele detectie en gericht herstel met minimale overlast. Inclusief advies over preventieve maatregelen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="page-section">
+      <div class="projects container">
+        <h2 class="section-title">Projecten</h2>
+        <div class="projects-grid">
+          <div class="project-card">
+            <div class="project-image">
+            </div>
+            <div class="project-content">
+              <h3>Badkamer renovatie</h3>
+              <p>Complete transformatie inclusief vloerverwarming, waterbesparend sanitair en nette oplevering binnen planning.</p>
+            </div>
+          </div>
+          <div class="project-card">
+            <div class="project-image">
+            </div>
+            <div class="project-content">
+              <h3>CV installatie</h3>
+              <p>Vervanging en optimalisatie van een HR-ketel met verbeterde circulatie en balans voor comfortabeler wonen.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="page-section">
+  <div class="contact container">
+    <div class="contact-container">
+      <h2 class="section-title">Contact</h2>
+      <div class="contact-content">
+        <div class="contact-info">
+          <h3>Neem contact op</h3>
+          <p>Bel ons of vul het formulier in — we nemen snel contact op. Ons kantooradres en locatiegegevens staan hieronder.</p>
+
+          <div class="contact-item" aria-hidden="false">
+            <strong>Telefoon</strong>
+            <a href="tel:+31201234567">+31 20 123 4567</a>
+            <small>24/7 bereikbaarheid voor spoed</small>
+          </div>
+
+          <div class="contact-item">
+            <strong>Email</strong>
+            <a href="mailto:info@mtl-technics.nl">info@mtl-technics.nl</a>
+            <small>We reageren binnen 72 uur</small>
+          </div>
+
+          <div class="contact-item">
+            <strong>Locatie</strong>
+            <span>Vaarkant Rechts 8i, 2960 Brecht</span>
+            <small>Werkzaam in heel Antwerpen!</small>
+          </div>
+        </div>
+
+        <form id="contact-form" class="contact-form" action="https://formsubmit.co/andrewbeijnen@gmail.com" method="POST" novalidate>
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_subject" value="Nieuwe contactaanvraag via website" />
+          <input type="hidden" name="_captcha" value="false" />
+
+          <h3>Vraag / Offerte</h3>
+
+          <div class="form-group">
+            <label for="name">Naam <span class="required">*</span></label>
+            <input id="name" name="Naam" type="text" required aria-required="true" />
+            <div id="err-name" class="field-error">Vul uw naam in.</div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mail <span class="required">*</span></label>
+            <input id="email" name="E-mail" type="email" required aria-required="true" />
+            <div id="err-email" class="field-error">Vul een geldig e-mailadres in.</div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Telefoon</label>
+            <input id="phone" name="Telefoon" type="tel" />
+            <div id="err-phone" class="field-error">Vul een geldig telefoonnummer in (optioneel).</div>
+          </div>
+
+          <div class="form-group">
+            <label for="service">Dienst</label>
+            <select id="service" name="Gewenste dienst">
+              <option value="Overig">Kies een dienst</option>
+              <option value="Badkamer Installatie">Badkamer Installatie</option>
+              <option value="Loodgietersdiensten">Loodgietersdiensten</option>
+              <option value="Centrale Verwarming">Centrale Verwarming</option>
+              <option value="Lekdetectie">Lekdetectie</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Bericht</label>
+            <textarea id="message" name="Bericht" placeholder="Vertel ons kort wat er aan de hand is..."></textarea>
+            <div id="err-message" class="field-error">Vul een bericht in (minimaal 10 tekens).</div>
+          </div>
+
+          <div class="form-group">
+            <label for="preferred-date">Voorkeursdatum</label>
+            <input id="preferred-date" name="Voorkeursdatum" type="date" />
+          </div>
+
+          <div class="form-group">
+            <label>
+              <input id="consent" name="Toestemming" type="checkbox" />
+              Ik ga akkoord dat mijn gegevens gebruikt worden om contact op te nemen. <span class="required">*</span>
+            </label>
+            <div id="err-consent" class="field-error">U moet akkoord gaan om te verzenden.</div>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submit-btn">Verstuur aanvraag</button>
+
+          <div id="form-feedback" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+(() => {
+  const contactForm = document.getElementById('contact-form');
+  const submitButton = document.getElementById('submit-btn');
+  const feedback = document.getElementById('form-feedback');
+  const cooldownKey = 'contactFormCooldown';
+  const cooldownMs = 60 * 60 * 1000;
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return m > 0 ? `${m}m ${sec}s` : `${sec}s`;
+  }
+
+  function disableSubmit(remainingMs) {
+    submitButton.disabled = true;
+    let secondsLeft = Math.ceil(remainingMs / 1000);
+    submitButton.textContent = `Wacht ${formatTime(secondsLeft)}`;
+    const interval = setInterval(() => {
+      secondsLeft--;
+      if (secondsLeft <= 0) {
+        clearInterval(interval);
+        submitButton.disabled = false;
+        submitButton.textContent = 'Verstuur aanvraag';
+        localStorage.removeItem(cooldownKey);
+      } else {
+        submitButton.textContent = `Wacht ${formatTime(secondsLeft)}`;
+      }
+    }, 1000);
+  }
+
+  function checkCooldown() {
+    const lastSent = localStorage.getItem(cooldownKey);
+    if (!lastSent) return false;
+    const elapsed = Date.now() - Number(lastSent);
+    if (elapsed < cooldownMs) {
+      disableSubmit(cooldownMs - elapsed);
+      return true;
+    }
+    return false;
+  }
+
+  checkCooldown();
+
+  contactForm.addEventListener('submit', e => {
+    e.preventDefault();
+    feedback.textContent = '';
+
+    if (submitButton.disabled) return;
+
+    const naam = contactForm.querySelector('#name').value.trim();
+    const email = contactForm.querySelector('#email').value.trim();
+    const telefoon = contactForm.querySelector('#phone').value.trim();
+    const dienst = contactForm.querySelector('#service').value;
+    const bericht = contactForm.querySelector('#message').value.trim();
+    const datum = contactForm.querySelector('#preferred-date').value;
+    const toestemming = contactForm.querySelector('#consent').checked;
+
+    if (!naam) {
+      feedback.textContent = 'Vul uw naam in.';
+      return;
+    }
+    if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      feedback.textContent = 'Vul een geldig e-mailadres in.';
+      return;
+    }
+    if (bericht.length > 0 && bericht.length < 10) {
+      feedback.textContent = 'Vul een bericht in van minimaal 10 tekens.';
+      return;
+    }
+    if (!toestemming) {
+      feedback.textContent = 'U moet akkoord gaan om te verzenden.';
+      return;
+    }
+
+    const data = {
+      Naam: naam,
+      "E-mail": email,
+      Telefoon: telefoon,
+      "Gewenste dienst": dienst,
+      Bericht: bericht,
+      Voorkeursdatum: datum,
+      Toestemming: toestemming,
+    };
+
+    submitButton.disabled = true;
+    submitButton.textContent = 'Verzenden...';
+
+    fetch('https://puzzle-server-0l4i.onrender.com/cooldown-mtl-technics', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('Verzenden mislukt');
+      return res.json();
+    })
+    .then(() => {
+      localStorage.setItem(cooldownKey, Date.now());
+      disableSubmit(cooldownMs);
+      feedback.textContent = 'Uw aanvraag is verstuurd!';
+
+      contactForm.submit();
+    })
+    .catch(() => {
+      feedback.textContent = 'Er is iets misgegaan, probeer het later opnieuw.';
+      submitButton.disabled = false;
+      submitButton.textContent = 'Verstuur aanvraag';
+    });
+  });
+})();
+</script>
+</section>
+
+  <footer class="footer" role="contentinfo">
+    <div class="container footer-content">
+      <div class="footer-section">
+        <h4>MTL-Technics</h4>
+        <p>Sanitair & Loodgietersdiensten - Betrouwbaar en vakkundig. 40+ jaar ervaring.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Contact</h4>
+        <p>Vaarkant Rechts 8i<br>2960 Brecht<br>Tel: +31 20 123 4567<br>Email: info@mtl-technics.nl</p>
+      </div>
+      <div class="footer-section">
+        <h4>Tijden</h4>
+        <p>24/7 voor spoed</p>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      &copy; <span id="year"></span> MTL-Technics
+    </div>
+  </footer>
+
+  <script>
+    const GOOGLE_CLIENT_ID = '900146880227-v5chjvl8biuj23ok1h5dpekkjtqv8h52.apps.googleusercontent.com';
+
+    const loginStatusEl = document.getElementById('login-status');
+    const googleSigninContainer = document.getElementById('google-signin');
+    const googleFallbackBtn = document.getElementById('google-fallback-btn');
+    const profileWrap = document.getElementById('profile');
+    const profilePic = document.getElementById('profile-pic');
+    const userNameEl = document.getElementById('user-name');
+    const userEmailEl = document.getElementById('user-email');
+    const dropdown = document.getElementById('dropdown');
+    const profileButton = document.getElementById('profile-button');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    function showLoginStatus(message, isOk = true, timeout = 3000) {
+      loginStatusEl.textContent = message;
+      loginStatusEl.classList.toggle('error', !isOk);
+      loginStatusEl.classList.add('show');
+      setTimeout(() => loginStatusEl.classList.remove('show'), timeout);
+    }
+
+    function parseJwt (token) {
+      try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function handleCredentialResponse(response) {
+      if (!response || !response.credential) {
+        showLoginStatus('Geen credential ontvangen', false);
+        return;
+      }
+      const payload = parseJwt(response.credential);
+      if (!payload) {
+        showLoginStatus('Kon Google-gegevens niet verwerken', false);
+        return;
+      }
+      const user = {
+        id: payload.sub,
+        name: payload.name || '',
+        email: payload.email || '',
+        picture: payload.picture || ''
+      };
+      localStorage.setItem('mtl_user', JSON.stringify(user));
+      setUserUI(user);
+      showLoginStatus('Ingelogd als ' + (user.name || user.email));
+      try { google.accounts.id.disableAutoSelect(); } catch (e) {}
+    }
+
+    function waitForGsi(timeout = 5000) {
+      return new Promise((resolve) => {
+        if (window.google && google.accounts && google.accounts.id) return resolve(true);
+        const start = Date.now();
+        const iv = setInterval(() => {
+          if (window.google && google.accounts && google.accounts.id) {
+            clearInterval(iv);
+            resolve(true);
+          } else if (Date.now() - start > timeout) {
+            clearInterval(iv);
+            resolve(false);
+          }
+        }, 100);
+      });
+    }
+
+    async function initGoogleSignIn() {
+      const ready = await waitForGsi(7000);
+      if (!ready) {
+        googleFallbackBtn.style.display = 'inline-flex';
+        googleFallbackBtn.setAttribute('aria-hidden', 'false');
+        googleSigninContainer.setAttribute('aria-hidden', 'true');
+        googleFallbackBtn.addEventListener('click', () => {
+          if (window.google && google.accounts && google.accounts.id) {
+            googleFallbackBtn.style.display = 'none';
+            googleSigninContainer.setAttribute('aria-hidden', 'false');
+            googleSigninContainer.style.display = 'flex';
+            renderGsi();
+            try { google.accounts.id.prompt(); } catch (e) {}
+          } else {
+            showLoginStatus('Google Sign-in niet beschikbaar', false);
+          }
+        });
+        return;
+      }
+      googleFallbackBtn.style.display = 'none';
+      googleSigninContainer.setAttribute('aria-hidden', 'false');
+      renderGsi();
+      try { google.accounts.id.prompt(); } catch (e) {}
+    }
+
+    function renderGsi() {
+      try {
+        google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleCredentialResponse,
+          auto_select: false,
+        });
+
+        googleSigninContainer.innerHTML = '';
+        google.accounts.id.renderButton(
+          googleSigninContainer,
+          { theme: 'outline', size: 'large', width: '220' }
+        );
+      } catch (e) {
+        googleSigninContainer.innerHTML = '';
+      }
+    }
+
+    function setUserUI(user) {
+      if (!user) return;
+      profilePic.src = user.picture || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><rect width="100%" height="100%" fill="%23476561"/><text x="50%" y="55%" font-size="18" fill="white" text-anchor="middle" font-family="sans-serif">U</text></svg>';
+      userNameEl.textContent = user.name || 'Gebruiker';
+      userEmailEl.textContent = user.email || '';
+      profileWrap.style.display = 'flex';
+      profileWrap.setAttribute('aria-hidden', 'false');
+      googleSigninContainer.style.display = 'none';
+      googleSigninContainer.setAttribute('aria-hidden', 'true');
+      googleFallbackBtn.style.display = 'none';
+      googleFallbackBtn.setAttribute('aria-hidden', 'true');
+    }
+
+    function clearUserUI() {
+      profileWrap.style.display = 'none';
+      profileWrap.setAttribute('aria-hidden', 'true');
+      googleSigninContainer.style.display = 'flex';
+      googleSigninContainer.setAttribute('aria-hidden', 'false');
+      profilePic.src = '';
+      userNameEl.textContent = '';
+      userEmailEl.textContent = '';
+    }
+
+    function signOut() {
+      localStorage.removeItem('mtl_user');
+      try {
+        if (window.google && google.accounts && google.accounts.id) {
+          google.accounts.id.disableAutoSelect();
+          const stored = localStorage.getItem('mtl_user_revoke_email');
+          if (stored && google && google.accounts && google.accounts.id && google.accounts.id.revoke) {
+            google.accounts.id.revoke(stored, () => {});
+          }
+        }
+      } catch (e) {}
+      clearUserUI();
+      showLoginStatus('Uitgelogd', true);
+    }
+
+    profileButton && profileButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = dropdown.classList.toggle('show');
+      profileButton.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    logoutBtn && logoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      signOut();
+      dropdown.classList.remove('show');
+      profileButton.setAttribute('aria-expanded', 'false');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!dropdown.classList.contains('show')) return;
+      if (!dropdown.contains(e.target) && !profileButton.contains(e.target)) {
+        dropdown.classList.remove('show');
+        profileButton.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        dropdown.classList.remove('show');
+        profileButton.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('.page-section');
+
+    function showPage(pageId) {
+      sections.forEach(s => {
+        if (s.id === pageId) {
+          s.classList.add('active');
+        } else {
+          s.classList.remove('active');
+        }
+      });
+      navLinks.forEach(a => a.classList.toggle('active', a.dataset.page === pageId));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const page = link.dataset.page;
+        if (!page) return;
+        showPage(page);
+      });
+    });
+
+    document.querySelectorAll('.hero-buttons [data-page]').forEach(b => {
+      b.addEventListener('click', (e) => {
+        e.preventDefault();
+        showPage(b.dataset.page);
+      });
+    });
+
+    const form = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const formFeedback = document.getElementById('form-feedback');
+
+    function validateForm() {
+      let ok = true;
+
+      const name = form.name.value.trim();
+      if (!name) {
+        document.getElementById('err-name').classList.add('visible');
+        ok = false;
+      } else {
+        document.getElementById('err-name').classList.remove('visible');
+      }
+
+      const email = form.email.value.trim();
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRe.test(email)) {
+        document.getElementById('err-email').classList.add('visible');
+        ok = false;
+      } else {
+        document.getElementById('err-email').classList.remove('visible');
+      }
+
+      const message = form.message.value.trim();
+      if (message && message.length < 10) {
+        document.getElementById('err-message').classList.add('visible');
+        ok = false;
+      } else {
+        document.getElementById('err-message').classList.remove('visible');
+      }
+
+      if (!form.consent.checked) {
+        document.getElementById('err-consent').classList.add('visible');
+        ok = false;
+      } else {
+        document.getElementById('err-consent').classList.remove('visible');
+      }
+
+      return ok;
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      formFeedback.innerHTML = '';
+
+      if (!validateForm()) {
+        formFeedback.innerHTML = '<div class="field-error visible">Controleer de gemarkeerde velden.</div>';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      const originalLabel = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<span class="loading" aria-hidden="true"></span> Bezig...';
+
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalLabel;
+        formFeedback.innerHTML = '<div class="success-message">Dank! Uw aanvraag is ontvangen. We nemen binnen 72 uur contact op.</div>';
+        form.reset();
+      }, 1200);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const yEl = document.getElementById('year');
+      if (yEl) yEl.textContent = new Date().getFullYear();
+
+      initGoogleSignIn();
+
+      const stored = localStorage.getItem('mtl_user');
+      if (stored) {
+        try {
+          const user = JSON.parse(stored);
+          setUserUI(user);
+        } catch (e) {
+          localStorage.removeItem('mtl_user');
+        }
+      }
+
+      showPage('home');
+
+      document.querySelectorAll('.nav-link').forEach(el => {
+        el.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            el.click();
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
